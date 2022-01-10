@@ -1,0 +1,41 @@
+#LandPage{
+display: flex;
+height: 90vh;
+width: 100%;
+flex-direction: column;
+justify-content: center;
+align-items:center;
+row-gap: 5%;
+}
+#LandPage img{
+    border-radius: 20% 0  20% 0;
+}
+#title{
+    padding: 10px ;
+    background-color: rgb(35, 172, 251);
+    font-weight: 900;
+    color: white;
+}
+#UserForm{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(128, 128, 128, 0.308);
+    
+}
+#UserForm form{
+    padding: 100px;
+    background-color: white;
+    border: honeydew 1px solid;
+    border-radius: 0 0 30% 0;
+}
+@media screen and (max-width:740px) {
+    #LandPage img{
+    width: 70%;
+}
+}

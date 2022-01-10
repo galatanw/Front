@@ -1,0 +1,3 @@
+const FIREBASE_key="AIzaSyB2HqkfL09mL2Ij1YGY1S-CJDXeVQob8uE"
+
+export{ FIREBASE_key}
