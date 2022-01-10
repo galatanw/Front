@@ -19,7 +19,7 @@ export default async function useAuth(
   SetUser(userRequest);
   SetErr(null);
  } catch (error) {
-  console.log(error.response);
+  console.log(error);
   SetErr(error.response);
  } finally {
   SetLoading(false);

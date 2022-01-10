@@ -1,0 +1,72 @@
+.container{
+position: relative;
+width: 95%;
+height: 50vh;
+}
+.addToReadIcon{
+position: absolute;
+width: 4%;
+right:-2%;
+top: 50%;
+}
+.addToReadIcon button{
+width: 100%;
+z-index: 100;
+margin: 0;
+padding: 0;
+}
+.addToCompleteIcon{
+position: absolute;
+width: 4%;
+right:-2%;
+top: 25%;
+}
+.addToCompleteIcon button{
+width: 100%;
+z-index: 100;
+margin: 0;
+padding: 0;
+}.removeFromListIcon{
+position: absolute;
+width: 4%;
+right:-2%;
+top: 75%;
+}
+.removeFromListIcon button{
+width: 100%;
+z-index: 100;
+margin: 0;
+padding: 0;
+}
+.info{
+width: 100%;
+height: 100%;
+border: 3px rgb(197, 191, 191) ridge;
+border-top-style:inset ;
+border-right-style: dashed;
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+grid-template-rows: repeat(3, 1fr);
+grid-column-gap: 6px;
+grid-row-gap: 4px;
+}
+.bookImage {padding: 10px; grid-area: 1 / 1 / 4/ 2;
+     display: flex;
+     justify-content: center;
+     align-items:center   ;}
+.bookTitle { grid-area: 1 / 2 / 2 / 4; }
+.bookDescription  {position: relative; overflow: hidden;grid-area: 2 / 2 / 3/ 4; }
+.bookAuthor { grid-area: 1/ 4 / 2 / 4; }
+.bookMore {position: relative; overflow: hidden;grid-area: 3 / 2 / 4 / 4; }
+.bookDescription::before{
+content: '....' ;
+display: block;
+position: absolute;
+bottom:0px;
+right: 0;}
+.bookMore::before{
+content: '....' ;
+display: block;
+position: absolute;
+bottom:0px;
+right: 0;}

@@ -16,6 +16,13 @@ row-gap: 5%;
     font-weight: 900;
     color: white;
 }
+#semiTitle{
+    padding: 10px ;
+    font-weight: 900;
+    border-radius: 0 0 20% 0;
+    font-family:serif;
+    color: black;
+}
 #UserForm{
     position: absolute;
     top: 0;
@@ -33,6 +40,9 @@ row-gap: 5%;
     background-color: white;
     border: honeydew 1px solid;
     border-radius: 0 0 30% 0;
+}
+.actionButtons button{
+margin: 10px;
 }
 @media screen and (max-width:740px) {
     #LandPage img{

@@ -11,8 +11,11 @@ export default function LandPage() {
   <h1 id="title">
     THE BOOK SHELF
   </h1>
+  <h4 id="semiTitle">
+    Created by Gal Atanw 
+  </h4>
   <img src="https://cdn.pixabay.com/photo/2015/06/02/12/59/book-794978__340.jpg" alt="Logo"/>
-  <div>
+  <div className="actionButtons">
   <Button 
     onClick={()=>ClickHandle(true)} 
     size="lg">
