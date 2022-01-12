@@ -1,3 +1,4 @@
 const FIREBASE_key="AIzaSyB2HqkfL09mL2Ij1YGY1S-CJDXeVQob8uE"
-
-export{ FIREBASE_key}
+const LOGGED_USER = 'Auth';
+const GOOGLE_BOOK_Key = 'AIzaSyBIr47Mow3sRWcgdX03UsQi108y5x9OXXc';
+export { GOOGLE_BOOK_Key, LOGGED_USER, FIREBASE_key };

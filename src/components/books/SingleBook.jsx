@@ -4,6 +4,7 @@ import { UsingBooks } from '../../App'
 import {BsPatchCheck,BsPatchCheckFill } from "react-icons/bs"
 import { RiDeleteBinLine} from "react-icons/ri"
 import { FcReading } from "react-icons/fc";
+import StarRating from './Stars'
 
 export default function SingleBook({book,status}) {
     let statusIcon;
@@ -26,23 +27,29 @@ export default function SingleBook({book,status}) {
       <div className={styles.container}>
      {deleteIcon?<div onClick={()=>dispatch({type:'reading',value:book})} className={styles.addToReadIcon}><FcReading/></div>:<>
      <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} className={styles.addToCompleteIcon}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
-    <div className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
+    <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?['completed','inCompleted']:['reading','inReading']})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
      <div className={styles.info}>
          <div className={styles.bookImage}>
              <img src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title+" image"}/>
          </div>
           <h5 className={styles.bookAuthor}>"{volumeInfo.authors}"</h5>
             <div className={styles.bookTitle}><h1>{volumeInfo.title}</h1>
-            <div className={styles.bookRating}>
-            </div>R A T I N G</div>
+            {statusIcon?<div className={styles.bookRating}>
+            <StarRating id={book.id} rate={book.rate}/>
+            </div>:null}
              <div className={styles.bookDescription}>
-                 <h4>{volumeInfo.description}</h4>
+                 <h4>{book.description?.length!=undefined?
+                 volumeInfo.description.slice(0,Math.floor(300/2)):
+                 "no description yet"}...</h4>
                  <p> </p>
             </div>  
             <div className={styles.bookMore}>
             <h1>Notes</h1>
-            {volumeInfo.notes?volumeInfo.notes.map((item)=><p key={i}>{item}</p>):<h4>'No Notes Yet'</h4>}</div>
+            {volumeInfo.note?.length!=undefined?
+                 volumeInfo.note.slice(0,Math.floor(100/2)):
+                 <h4>'No Notes Yet'</h4>}</div>
             </div>
+ </div>
  </div>
     )
 }

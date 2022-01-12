@@ -1,6 +1,5 @@
-const LOGGED_USER = 'Auth';
 import axios from 'axios';
-import { FIREBASE_key } from '../../../KEYS';
+import { LOGGED_USER, FIREBASE_key } from '../../../KEYS';
 export default async function useAuth(
  isUserExist,
  userInfo,

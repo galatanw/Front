@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import SingleBook from '../components/BookList/SingleBook'
+import SingleBook from '../components/books/SingleBook'
 
 export default function ReadingList({readingBooks}) {
     if(!readingBooks){
@@ -9,6 +9,7 @@ export default function ReadingList({readingBooks}) {
             </div>
         )
     }
+    console.log('reading');
     return (
         <div>
             {readingBooks.map((book)=>{

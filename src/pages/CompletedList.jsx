@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import SingleBook from '../components/books/SingleBook'
 
-export default function CompletedList({completedBooks}) {
+export default function CompletedBooks({completedBooks}) {
     if(!completedBooks){
         return(
-            <h1>finish your book</h1>
+            <div>
+                <h1>you haven't started</h1>
+            </div>
         )
     }
+    console.log('reading');
     return (
         <div>
-                   {completedBooks.map((book)=>{
+            {completedBooks.map((book)=>{
                return <Fragment key={book.id}>
                     <SingleBook book={book}status={'completed'}/>
                 </Fragment>
