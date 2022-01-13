@@ -14,6 +14,10 @@ export default async function useAuth(
  try {
   userInfo['returnSecureToken'] = true;
   const userRequest = await axios.post(url, userInfo);
+  const time =new Date().getTime();
+  const twentyMinInMs=1000*60*20
+  userRequest.experationTimeBook =time+twentyMinInMs;
+  console.log(userRequest.experationTimeBook);
   localStorage.setItem(LOGGED_USER, JSON.stringify(userRequest));
   SetUser(userRequest);
   SetErr(null);

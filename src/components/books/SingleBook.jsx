@@ -27,11 +27,10 @@ export default function SingleBook({book,status}) {
     const dispatch = useContext(UsingBooks)
     return ( 
         <div className={styles.container}>
-          <p>{book.id}</p>
           {details?<Navigate to={'/details'+book.id} replace={details}/>:null} 
      {deleteIcon?<div onClick={()=>dispatch({type:'reading',value:book})} className={styles.addToReadIcon}><FcReading/></div>:<>
      <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} className={styles.addToCompleteIcon}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
-    <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?['completed','inCompleted']:['reading','inReading']})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
+    <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?'completed':'reading'})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
      <div className={styles.info}>
          <div className={styles.bookImage}>
              <img onClick={()=>{dispatch({type:'details',value:book});setdetails(true)}} src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title+" image"}/>
@@ -42,15 +41,15 @@ export default function SingleBook({book,status}) {
             <StarRating id={book.id} rate={book.rate}/>
             </div>:null}
              <div className={styles.bookDescription}>
-                 <h4>{book.description?.length!=undefined?
-                 volumeInfo.description.slice(0,Math.floor(300/2)):
+                 <h4>{volumeInfo.description?.length!=undefined?
+                 volumeInfo.description.slice(0,150):
                  "no description yet"}...</h4>
                  <p> </p>
             </div>  
             <div className={styles.bookMore}>
             <h1>Notes</h1>
             {volumeInfo.note?.length!=undefined?
-                 volumeInfo.note.slice(0,Math.floor(100/2)):
+                 volumeInfo.note.slice(0,150):
                  <h4>'No Notes Yet'</h4>}</div>
             </div>
  </div>

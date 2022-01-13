@@ -38,17 +38,21 @@ searchProcess(search)
         <div>
         {searchedBooks.map((book,i)=>{
         let status='none'
-   if(books.inReading?.indexOf(book.id)!=-1&&books.inReading!=undefined){status='reading';}
-   if(books.inCompleted?.indexOf(book.id)!=-1&&books.inCompleted!=undefined){status='completed'}
+   const reading=books?.reading?.findIndex(item=>item.id===book.id)
+   const completed=books?.completed?.findIndex(item=>item.id===book.id)
+    if(reading!=-1&&reading!=undefined)status='reading';
+    if(completed!=-1&&completed!=undefined)status='completed';
    return <Fragment key={book.id}>
        <SingleBook book={book}status={status}/>
        </Fragment>
         })}
     </div>: books.bookList.slice(page,page+10).map((book,i)=>{
-       let status='none'
-       if(books?.inReading?.indexOf(book.id)!=-1&&books?.inReading!=undefined){status='reading';}
-       if(books?.inCompleted?.indexOf(book.id)!=-1&&books?.inCompleted!=undefined){status='completed'}
-       return <Fragment key={book.id}>
+        let status='none'
+        const reading=books?.reading?.findIndex(item=>item.id===book.id)
+        const completed=books?.completed?.findIndex(item=>item.id===book.id)
+        if(reading!=-1&&reading!=undefined)status='reading';
+        if(completed!=-1&&completed!=undefined)status='completed';
+        return <Fragment key={book.id}>
         <SingleBook book={book}status={status}/>
         </Fragment>
    })}

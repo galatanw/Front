@@ -35,10 +35,9 @@ export default function Details({book,status}) {
     <div id="infoContainer">
         <h2>Autor:  {volumeInfo.authors}</h2>
         <h2>Title:  {volumeInfo.title}</h2>
-            { status==='none'?<div onClick={()=>dispatch({type:'reading',value:book})} ><FcReading/></div>:
-           <>
-           <span onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}
-           </span><span onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?['completed','inCompleted']:['reading','inReading']})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></span></>}
+            {didntRead?<div onClick={()=>dispatch({type:'reading',value:book})} ><FcReading/></div>:<>
+             <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} >{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
+            <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?'completed':'reading'})}}><RiDeleteBinLine/></div></>}
         {status==='completed'?<StarRating id={book.id} rate={book.rate}/>:null}
     </div>
     <div id="description">
@@ -56,7 +55,7 @@ export default function Details({book,status}) {
         Rem natus placeat saepe perferendis. Explicabo pariatur, atque reprehenderit quas voluptates quia ad temporibus, officiis, assumenda facilis laboriosam ipsum optio unde expedita laudantium doloremque molestias error ducimus exercitationem porro ut!</p>
     </div>
     <h2>Notes</h2>
-    <textarea value={book.note}  onChange={(e)=>dispatch({type:'notes' ,value:book.id,note:e.target.value})}  rows="30"></textarea>
+    <textarea value={book.note}  onChange={(e)=>dispatch({type:'notes' ,value:book.id,note:e.target.value})}  rows="15"></textarea>
     </div>
     )
 }
