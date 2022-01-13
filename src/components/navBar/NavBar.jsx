@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import { useContext } from "react";
 import {Link} from "react-router-dom";
-
+import { SetUserContext } from "../../App";
 import {ImBooks }from 'react-icons/im'
-
 import {RiLogoutCircleRLine }from 'react-icons/ri'
-
 import { Button,Navbar,Container,Nav} from "react-bootstrap";
 
-const NavBar = () => {
+const NavBar = ({userName,setUser}) => {
+  const dispatch=useContext(SetUserContext)
+  const style={display: 'block',
+    padding: '0.5rem 1rem',
+    color: '#0d6efd',
+    textDecoration: 'none',
+    transition: 'color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out'}
 return <>
 <Navbar collapseOnSelect expand="lg" bg="dark" variant>
   <Container>
@@ -20,7 +24,8 @@ return <>
       <Nav.Link as={Link} to={'/Completed'}>Completed</Nav.Link>
     </Nav>
     <Nav>
-  <Navbar.Brand as={Button}><RiLogoutCircleRLine bg={'dark'}/></Navbar.Brand>
+  <p style={style}>{userName}</p>
+  <Navbar.Brand onClick={()=>{dispatch(false);}} as={Button}><RiLogoutCircleRLine/></Navbar.Brand>
     </Nav>
   </Navbar.Collapse>
   </Container>

@@ -1,12 +1,14 @@
-import {useContext} from 'react'
+import {useContext,useState} from 'react'
+
 import * as styles from './singleBook.module.css'
 import { UsingBooks } from '../../App'
 import {BsPatchCheck,BsPatchCheckFill } from "react-icons/bs"
 import { RiDeleteBinLine} from "react-icons/ri"
 import { FcReading } from "react-icons/fc";
 import StarRating from './Stars'
-
+import {Navigate } from "react-router-dom";
 export default function SingleBook({book,status}) {
+    const [details, setdetails] = useState(false)
     let statusIcon;
     let deleteIcon=true;
     switch (status) {
@@ -24,13 +26,15 @@ export default function SingleBook({book,status}) {
     const {volumeInfo}=book 
     const dispatch = useContext(UsingBooks)
     return ( 
-      <div className={styles.container}>
+        <div className={styles.container}>
+          <p>{book.id}</p>
+          {details?<Navigate to={'/details'+book.id} replace={details}/>:null} 
      {deleteIcon?<div onClick={()=>dispatch({type:'reading',value:book})} className={styles.addToReadIcon}><FcReading/></div>:<>
      <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} className={styles.addToCompleteIcon}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
     <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?['completed','inCompleted']:['reading','inReading']})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
      <div className={styles.info}>
          <div className={styles.bookImage}>
-             <img src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title+" image"}/>
+             <img onClick={()=>{dispatch({type:'details',value:book});setdetails(true)}} src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title+" image"}/>
          </div>
           <h5 className={styles.bookAuthor}>"{volumeInfo.authors}"</h5>
             <div className={styles.bookTitle}><h1>{volumeInfo.title}</h1>

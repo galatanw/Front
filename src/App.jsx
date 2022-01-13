@@ -1,33 +1,28 @@
 import {useState,createContext,useEffect,useReducer} from 'react'
-import {BrowserRouter,Link,Routes,Route} from "react-router-dom";
 import {GOOGLE_BOOK_Key} from '../KEYS' 
+const url=`https://www.googleapis.com/books/v1/volumes?q=Business&Economics&language=english&orderBy=newest&printType=books&maxResults=30&key=${GOOGLE_BOOK_Key}`
 import axios from 'axios';
-import Home from './pages/Home';
 import LandPage from './pages/LandPage';
-import Books from './pages/Books';
-import Details from './pages/Details';
-import Navbar  from './components/navBar/NavBar';
-import ReadingList from './pages/ReadingList';
-import CompletedList from './pages/CompletedList';
+import Logged from './components/loggedUser/Logged';
 export const SetUserContext=createContext()
 export const UsingBooks=createContext()
 export default function App() {
   const [user, setUser] = useState(false)
   const [books, dispatch] = useReducer(BooksHandling, false)
-  useEffect(()=>{
-    if(!user)return
-    const ActiveUser=localStorage.getItem(user.data.email)
-    if(ActiveUser!=null)return dispatch({ type:"activeUser",value:JSON.parse(ActiveUser) })
 const axiosBo =async ()=>{
-      try{
-        const url=`https://www.googleapis.com/books/v1/volumes?q=Business&Economics&language=english&orderBy=newest&printType=books&maxResults=30&key=${GOOGLE_BOOK_Key}`
-        const books=await axios.get(url) 
-        dispatch({ type:"bookList",value:books.data.items})
+  try{
+    const books=await axios.get(url) 
+    dispatch({ type:"bookList",value:books.data.items})
       }
       catch(err){
         console.error(err);
       }
     }
+
+  useEffect(()=>{
+    if(!user)return dispatch({type:'logOut'})
+    const ActiveUser=localStorage.getItem(user.data.email)
+    if(ActiveUser!=null)return dispatch({ type:"activeUser",value:JSON.parse(ActiveUser) })
     axiosBo()
 
   },[user])
@@ -35,24 +30,16 @@ const axiosBo =async ()=>{
     localStorage.setItem(user.data.email,JSON.stringify(books))
 }
  return (
-     <div>
-     {books?
+   <div>
+       <SetUserContext.Provider value={setUser}>
+     {user&&books?
     <UsingBooks.Provider value={dispatch}>
-      <BrowserRouter>
-      <Navbar/>
-    <Routes>
-      <Route exact path="/books"element={<Books books={books}/>}/>
-      <Route exact path="/Reading"element={<ReadingList readingBooks={books.reading} />}/>
-      <Route exact path="/Completed"element={<CompletedList completedBooks={books.completed} />}/>
-    {books.detailedBook?<Route exact path={'details'+books.detailedBook.id} element={<Details book={books.detailedBook}status={ isInList(books,books.detailedBook)}/>}/>:null}
-    </Routes>
-    </BrowserRouter>
+      <Logged user={user} books={books}/>
   </UsingBooks.Provider>
   :
-    <SetUserContext.Provider value={setUser}>
   <LandPage/>
-  </SetUserContext.Provider>
-  }
+}
+</SetUserContext.Provider>
   </div>
   )
 }
@@ -104,7 +91,7 @@ function BooksHandling(state,action){
       completed.splice(index,1)
     ;}
     }
-      if(!state?.reading)    
+      if(state?.reading===undefined )    
   return {...state,reading:[action.value],inCompleted:inCompleted,inReading:[action.value.id],completed:completed}
     reading.unshift(action.value)
     inReading.unshift(action.value.id)
@@ -134,14 +121,12 @@ function BooksHandling(state,action){
     index=state.bookList.findIndex((item)=>item.id===action.id)
     books[index].rate=action.value
     return{...state,bookList:books}
-  
+    case 'logOut':
+        return null
+    case 'details':
+    return{...state,detailedBook:action.value}
     default:
       break;
   }
 }
 
-function isInList(books,id){
-if(books?.inReading?.indexOf(id)!=-1&&books?.inReading!=undefined)return 'reading';
-if(books?.inCompleted?.indexOf(id)!=-1&&books?.inCompleted!=undefined) return 'completed';
-return 'none'
-}

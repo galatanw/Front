@@ -1,0 +1,14 @@
+#container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+#imgContainer img{
+    width: 100%;
+}
+#description{
+    width: 100%;
+}
+textarea{
+    width: 100%;
+}

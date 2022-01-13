@@ -1,16 +1,18 @@
-import React, {Fragment,useState,useEffect } from 'react'
+import React, {Fragment,useRef,useState,useEffect } from 'react'
+import './books.css'
 import SingleBook from '../components/books/SingleBook'
-
+import { Button } from 'react-bootstrap'
+import { RiSearchEyeFill } from 'react-icons/ri'
 export default function Books({books}) {
     const [searchedBooks,setSearchBooks]=useState(false)
+    const [search, setSearch] = useState(null)
     const [page, setPage] = useState(0)
-    const [input, setInput] = useState(null)
+    const input=useRef()
     useEffect(()=>{
-if(input===null)return setSearchBooks(false)
-searchProcess(input)
-},[input])
+if(search==='') return setSearchBooks(false)
+searchProcess(search)
+},[search])
     function searchProcess(input){
-        console.log(input);
         const word=new RegExp(input,'ig')
         const BOOKS=[];
         for (let index = 0; index < books.bookList.length; index++) {
@@ -19,14 +21,19 @@ searchProcess(input)
             if(compareBook?.title?.match(word))BOOKS.push(book)
             else if(compareBook?.description?.match(word))BOOKS.push(book)
             else if(compareBook?.authors[0]?.match(word))BOOKS.push(book)
-            if(BOOKS.length===10) return setSearchBooks(BOOKS)
+            if(BOOKS.length===10){return setSearchBooks(BOOKS)}
         }
         return  BOOKS.length?setSearchBooks(BOOKS):setSearchBooks(false)
     }
     return (
         <Fragment>
     <div>
-            <input type='search' onKeyUp={(e)=>e.target.value.length>0?setInput(e.target.value):setInput(null)} />
+    <div className="wrap">
+   <div className="search">
+      <input type="text" ref={input} className="searchTerm" placeholder="What are you looking for?"/>
+      <Button onClick={()=>{setSearch(input.current.value)}}  size='sm' type='submit'><RiSearchEyeFill/></Button>
+   </div>
+</div>
    {searchedBooks?
         <div>
         {searchedBooks.map((book,i)=>{
