@@ -1,8 +1,12 @@
 import React, {Fragment,useRef,useState,useEffect } from 'react'
-import './books.css'
+import './css/books.css'
 import SingleBook from '../components/books/SingleBook'
 import { Button } from 'react-bootstrap'
 import { RiSearchEyeFill } from 'react-icons/ri'
+import {AiOutlineArrowRight,AiOutlineArrowLeft} from 'react-icons/ai'  
+import {BiArrowToLeft,BiArrowToRight} from 'react-icons/bi'  
+
+
 export default function Books({books}) {
     const [searchedBooks,setSearchBooks]=useState(false)
     const [search, setSearch] = useState(null)
@@ -12,6 +16,26 @@ export default function Books({books}) {
 if(search==='') return setSearchBooks(false)
 searchProcess(search)
 },[search])
+function movePage(e){
+       switch (e.currentTarget.value) {
+  case 'fowroad':
+      if(page+10>=books.bookList.length)setPage(books.bookList.length-1-10)
+      else setPage(page+10)
+      break;
+  case 'previous':
+      if(page-10<=0)setPage(0)
+      else setPage(page-10)
+      break;
+    case 'start':
+        setPage(0)
+        break
+    case 'end':
+        setPage(books.bookList.length-1-10)
+    break
+  default:
+      break;
+       }
+}
     function searchProcess(input){
         const word=new RegExp(input,'ig')
         const BOOKS=[];
@@ -56,25 +80,18 @@ searchProcess(search)
         <SingleBook book={book}status={status}/>
         </Fragment>
    })}
-   <select name="" id="" onChange={(e)=>{
-       switch (e.target.value) {
-  case '1':
-      setPage(0)
-      break;
-  case '2':
-      setPage(10)
-      break
-  case '3':
-      setPage(20)
-  default:
-      break;
-       }
-       setPage
-   }}>
-       <option value="1">1</option>
-       <option value="2">2</option>
-       <option value="3">3</option>
-   </select>
+       <button style={{width:'100%'}}onClick={(e)=>movePage(e)} value={'start'} disabled={page===0}>
+        <BiArrowToLeft style={{width:'100%'}}/>
+       </button>
+       <button style={{width:'100%'}} value={'previous'} onClick={(e)=>movePage(e)} disabled={page===0}>  
+        <AiOutlineArrowLeft style={{width:'100%'}}/>
+       </button>
+       <button style={{width:'100%'}}onClick={(e)=>movePage(e)} value={'fowroad'} disabled={page>=books.bookList.length-1-10}>
+        <AiOutlineArrowRight style={{width:'100%'}}/>
+       </button>
+       <button style={{width:'100%'}}onClick={(e)=>movePage(e)} value={'end'} disabled={page>=books.bookList.length-1-10}>
+        <BiArrowToRight style={{width:'100%'}}/>
+       </button>
         </div>
         </Fragment>
 

@@ -64,12 +64,12 @@ display: block;
 position: absolute;
 bottom:0px;
 right: 0;} */
-.bookMore::before{
+/* .bookMore::before{
 content: '....' ;
 display: block;
 position: absolute;
 bottom:0px;
-right: 0;}
+right: 0;} */
 @media only screen and (max-width:425px){
      .container{
           height: auto;

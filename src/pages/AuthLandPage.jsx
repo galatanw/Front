@@ -1,9 +1,8 @@
 import { useState } from "react"
 import { Button } from "react-bootstrap"
 import HandleUser from "../components/Auth/HandleUser"
-import './Landpage.css'
-export default function LandPage() {
-  
+import './css/Landpage.css'
+export default function AuthLandPage() {
     const [userAction, setAction] = useState({clicked:false,action:"select"})
     const ClickHandle=(bool)=>setAction({clicked:true,action:bool})
     return (

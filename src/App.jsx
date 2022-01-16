@@ -2,15 +2,60 @@ import {useState,createContext,useEffect,useReducer} from 'react'
 import {GOOGLE_BOOK_Key} from '../KEYS' 
 const url=`https://www.googleapis.com/books/v1/volumes?q=Business&Economics&language=english&orderBy=newest&printType=books&maxResults=30&key=${GOOGLE_BOOK_Key}`
 import axios from 'axios';
-import LandPage from './pages/LandPage';
+import LandPage from './pages/AuthLandPage';
 import Logged from './components/loggedUser/Logged';
 export const SetUserContext=createContext()
 export const UsingBooks=createContext()
+import StillLogged from './components/StillLogged';
 export default function App() {
   const [user, setUser] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [books, dispatch] = useReducer(BooksHandling, false)
   let TIMER;
+    useEffect(()=>{
+
+// see if there is a user auth on localStorage
+      const Auth=localStorage.getItem('Auth')?JSON.parse(localStorage.getItem('Auth')):null
+if(Auth&&!user){ 
+  const expires=Auth.experationTimeBook    
+  const now=new Date().getTime()
+  // is the user auth  experationTimeBook is still valid
+  if(expires>now ){
+    setUser(Auth)
+    TIMER=setTimeout(logOut,expires-now)
+    const activeUser=localStorage.getItem(Auth.data.email)
+    if(activeUser!=null){
+    returningUser(activeUser)  
+  }  
+    }
+  }
+  // if the user auth is not valid or simply not exists on localStorage
+  else{
+  if(!user)return dispatch({type:'logOut'})
+    const activeUser=localStorage.getItem(user.data.email)
+    if(activeUser!=null){
+    returningUser(activeUser) 
+    const twentyMinInMs=60*20*1000
+    TIMER=setTimeout(logOut,twentyMinInMs)
+    }
+    // if the user has no localStorage data
+    else newUser()}},[user])
+  window.onbeforeunload =()=>settingUserLocalStorage(books,user.data.email)
+
+ return (
+<div>
+       <SetUserContext.Provider value={setUser}>
+     {user&&books?
+    <UsingBooks.Provider value={dispatch}>
+      <Logged TIMER={TIMER} user={user} books={books}/>
+      <div>footer</div>
+  </UsingBooks.Provider>
+  :!user?
+  <LandPage/>:<StillLogged userName={user.data.email}/>}
+</SetUserContext.Provider>
+  </div>
+  )
+
+
   function logOut(){
     dispatch({type:'logOut',userName:user.data.email,timer:TIMER})
     setUser(false)
@@ -21,8 +66,7 @@ export default function App() {
     const twentyMinInMs=60*20*1000
     dispatch({ type:"bookList",value:books.data.items})
     TIMER=setTimeout(logOut,twentyMinInMs)
-    return setLoading(false)
-    
+    return 
       }
       catch(err){
         console.error(err);
@@ -32,56 +76,13 @@ async function returningUser(activeUser){
     const books=await axios.get(url) 
     const data=JSON.parse(activeUser)
     dispatch({ type:"activeUser",value:books.data.items,reading:data.reading,completed:data.completed })
-    return setLoading(false)
+    return 
       }
       catch(err){
         console.error(err);
       }
-    }
-    useEffect(()=>{
-const Auth=localStorage.getItem('Auth')?JSON.parse(localStorage.getItem('Auth')):null
-if(Auth&&!user){ 
-  const expires=Auth.experationTimeBook    
-  const now=new Date().getTime()
-    if(expires>now ){
-    setUser(Auth)
-    TIMER=setTimeout(logOut,expires-now)
-    const activeUser=localStorage.getItem(Auth.data.email)
-    if(activeUser!=null){
-      setLoading(true)
-    returningUser(activeUser)  
-  }  
-    }
-  }
-else{
-  if(!user)return dispatch({type:'logOut'})
-    const activeUser=localStorage.getItem(user.data.email)
-    if(activeUser!=null){
-      setLoading(true)
-    returningUser(activeUser) 
-    const twentyMinInMs=60*20*1000
-    TIMER=setTimeout(logOut,twentyMinInMs)
-    }
-    else {setLoading(true);newUser()}
-}
-  },[user])
-  window.onbeforeunload =()=>settingUserLocalStorage(books,user.data.email)
+    }}
 
- return (
-   <div>
-     {loading?<p>load</p>:null}
-       <SetUserContext.Provider value={setUser}>
-     {user&&books?
-    <UsingBooks.Provider value={dispatch}>
-      <Logged TIMER={TIMER} user={user} books={books}/>
-  </UsingBooks.Provider>
-  :
-  <LandPage/>
-}
-</SetUserContext.Provider>
-  </div>
-  )
-}
 
 
 function BooksHandling(state,action){
@@ -113,7 +114,8 @@ function BooksHandling(state,action){
       return {...state,bookList:action.value}
   case 'details':
       return{...state,detailedBook:action.value}  
-  
+  case 'detailsOnClose':
+    return{...state,detailedBook:false}
   
   
       case "completed":
@@ -155,8 +157,6 @@ function BooksHandling(state,action){
     books[index].note=action.note
     return{...state,bookList:books}
 
-case 'details':
-    return{...state,detailedBook:action.value}
     case 'rating':
     index=state.bookList.findIndex((item)=>item.id===action.id)
     books[index].rate=action.value
@@ -174,7 +174,6 @@ case 'details':
 }
 
 function settingUserLocalStorage(books,user){
-  alert(1)
   if(!books)return 
    if(!books?.completed?.length&&!books?.reading?.length) return
     let completed={},reading={}
@@ -192,3 +191,5 @@ function settingUserLocalStorage(books,user){
   }
   localStorage.setItem(user,JSON.stringify({completed:completed,reading:reading  }))
 }
+
+

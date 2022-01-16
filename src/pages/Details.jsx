@@ -1,5 +1,5 @@
-import {useContext} from 'react'
-import'./Details.css'
+import {useContext,useEffect} from 'react'
+import'./css/Details.css'
 import {BsPatchCheck,BsPatchCheckFill } from "react-icons/bs"
 import {FcReading } from "react-icons/fc"
 import {RiDeleteBinLine } from "react-icons/ri"
@@ -25,8 +25,14 @@ export default function Details({book,status}) {
          didntRead=true;    
             break;
     }
-    // console.log(status);
     const {volumeInfo}=book
+            useEffect(() => {
+            
+            return () => {
+                dispatch({type:'detailsOnClose'})
+            }
+        }, [])
+
     return (
       <div id='container'>
             <div id="imgContainer">
@@ -35,7 +41,7 @@ export default function Details({book,status}) {
     <div id="infoContainer">
         <h2>Autor:  {volumeInfo.authors}</h2>
         <h2>Title:  {volumeInfo.title}</h2>
-            {didntRead?<div onClick={()=>dispatch({type:'reading',value:book})} ><FcReading/></div>:<>
+            {status==='none'?<div onClick={()=>dispatch({type:'reading',value:book})} ><FcReading/></div>:<>
              <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} >{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
             <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?'completed':'reading'})}}><RiDeleteBinLine/></div></>}
         {status==='completed'?<StarRating id={book.id} rate={book.rate}/>:null}

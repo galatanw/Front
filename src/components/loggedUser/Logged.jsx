@@ -1,10 +1,10 @@
 import {BrowserRouter,Link,Routes,Route} from "react-router-dom";
-import Home from '../../pages/Home';
 import Books from '../../pages/Books';
 import Details from '../../pages/Details';
-import Navbar  from '../../components/navBar/NavBar';
+import Navbar  from './navBar/NavBar';
 import ReadingList from '../../pages/ReadingList';
 import CompletedList from '../../pages/CompletedList';
+import PageNotFound from "../../pages/PageNotFound";
 
    export default function Logged({TIMER,user,books}) {
      
@@ -12,10 +12,11 @@ import CompletedList from '../../pages/CompletedList';
         <BrowserRouter>
       <Navbar TIMER={TIMER} userName={user.data.email}/>
     <Routes>
-      <Route exact path="/books"element={<Books books={books}/>}/>
+      <Route exact path="/"element={<Books books={books}/>}/>
       <Route exact path="/Reading"element={<ReadingList readingBooks={books.reading} />}/>
       <Route exact path="/Completed"element={<CompletedList completedBooks={books.completed} />}/>
     {books.detailedBook?<Route exact path={'details'+books.detailedBook.id} element={<Details book={books.detailedBook}status={isInList(books,books.detailedBook.id)}/>}/>:null}
+      <Route path='*' element={<PageNotFound/>}/>
     </Routes>
     </BrowserRouter>
        )

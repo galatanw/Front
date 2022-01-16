@@ -28,12 +28,12 @@ export default function SingleBook({book,status}) {
     return ( 
         <div className={styles.container}>
           {details?<Navigate to={'/details'+book.id} replace={details}/>:null} 
-     {deleteIcon?<div onClick={()=>dispatch({type:'reading',value:book})} className={styles.addToReadIcon}><FcReading/></div>:<>
-     <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} className={styles.addToCompleteIcon}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
-    <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?'completed':'reading'})}} className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
+     {deleteIcon?<div onClick={()=>dispatch({type:'reading',value:book})} title='mark as reading' className={styles.addToReadIcon}><FcReading/></div>:<>
+     <div onClick={!statusIcon?()=>dispatch({type:'completed',value:book}):()=>dispatch({type:'reading',value:book,restore:true})} title={statusIcon?'complete/click to unmark ':'reading/mark to complete'} className={styles.addToCompleteIcon}>{statusIcon?<BsPatchCheckFill/>:<BsPatchCheck/>}</div>
+    <div onClick={()=>{dispatch({type:'remove',value:book.id,list:statusIcon?'completed':'reading'})}}title='cancel following' className={styles.removeFromListIcon}><RiDeleteBinLine/></div></>}
      <div className={styles.info}>
          <div className={styles.bookImage}>
-             <img onClick={()=>{dispatch({type:'details',value:book});setdetails(true)}} src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title+" image"}/>
+             <img onClick={()=>{dispatch({type:'details',value:book});setdetails(true)}} src={volumeInfo.imageLinks.thumbnail} title={volumeInfo.title+" cover"} alt={volumeInfo.title+"missing image"}/>
          </div>
           <h5 className={styles.bookAuthor}>"{volumeInfo.authors}"</h5>
             <div className={styles.bookTitle}><h1>{volumeInfo.title}</h1>
@@ -48,8 +48,8 @@ export default function SingleBook({book,status}) {
             </div>  
             <div className={styles.bookMore}>
             <h1>Notes</h1>
-            {volumeInfo.note?.length!=undefined?
-                 volumeInfo.note.slice(0,150):
+            {book.note?.length!=undefined?
+                 book.note.slice(0,150)+'...':
                  <h4>'No Notes Yet'</h4>}</div>
             </div>
  </div>
