@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import SingleBook from '../components/books/SingleBook'
 
 export default function ReadingList({readingBooks}) {
-    if(!readingBooks){
+    if(!readingBooks.length){
         return(
             <div>
                 <h1>you haven't started</h1>

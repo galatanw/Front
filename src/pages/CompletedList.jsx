@@ -2,10 +2,10 @@ import React, { Fragment } from 'react'
 import SingleBook from '../components/books/SingleBook'
 
 export default function CompletedBooks({completedBooks}) {
-    if(!completedBooks){
+    if(!completedBooks.length){
         return(
             <div>
-                <h1>you haven't started</h1>
+                <h1>no books finished yet</h1>
             </div>
         )
     }
