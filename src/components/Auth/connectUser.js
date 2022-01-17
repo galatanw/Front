@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { LOGGED_USER, FIREBASE_key } from '../../../KEYS';
-export default async function useAuth(
+import { LOGGED_USER, FIREBASE_key } from '../../KEYS';
+export default async function setAuth(
  isUserExist,
  userInfo,
  SetUser,

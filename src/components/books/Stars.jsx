@@ -1,6 +1,6 @@
 import {useContext, useState} from 'react'
 import { UsingBooks } from '../../App';
-import * as styles from './stars.module.css'
+import styles from './stars.module.css'
 export default function StarRating({id,rate}) {
 const dispatch=useContext(UsingBooks)
   const [rating, setRating] = useState(rate||0);

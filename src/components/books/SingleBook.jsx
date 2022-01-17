@@ -1,6 +1,6 @@
 import {useContext,useState} from 'react'
 
-import * as styles from './singleBook.module.css'
+import styles from './singleBook.module.css'
 import { UsingBooks } from '../../App'
 import {BsPatchCheck,BsPatchCheckFill } from "react-icons/bs"
 import { RiDeleteBinLine} from "react-icons/ri"

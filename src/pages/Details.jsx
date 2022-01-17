@@ -21,7 +21,6 @@ export default function Details({book,status}) {
          didntRead=false;
             break
         default:
-            statusIcon;
          didntRead=true;    
             break;
     }

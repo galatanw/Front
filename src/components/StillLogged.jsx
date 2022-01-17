@@ -1,5 +1,5 @@
 import React from 'react'
-import { SpinnerDotted } from 'spinners-react';
+import {SpinnerDotted} from 'spinners-react'
 export default function StillLogged({userName}) {
     return (
         <div style={{width:'100%',height:'100vh',display:'flex',justifyContent:'center',alignItems:'center'}}>

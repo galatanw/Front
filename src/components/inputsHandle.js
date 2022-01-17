@@ -27,6 +27,8 @@ export function verifyInp(state, action) {
     return { ...state, Valid: false, [action.type]: action.value };
    }
    return { ...state, Valid: true, [action.type]: action.value };
+   default:
+     break
  }
 }
 

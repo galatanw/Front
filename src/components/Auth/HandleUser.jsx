@@ -1,5 +1,5 @@
 import { useState, useReducer,useContext } from 'react';
-import useAuth from './connectUser';
+import setAuth from './connectUser';
 import { verifyInp } from '../inputsHandle';
 import Load from '../API_indicators/spinner';
 import ErrorIndicator from '../API_indicators/Alert';
@@ -18,7 +18,7 @@ export default function HandleUser({ action}) {
         if (!inputs.Valid) {
             const userFormData={ email: inputs.email, password: inputs.password }
             setLoading(true);
-            useAuth(action,userFormData,setUser, setLoading, seterr);
+            setAuth(action,userFormData,setUser, setLoading, seterr);
         }
     }
     function inputsHandle(e) {
